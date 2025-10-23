@@ -1,0 +1,60 @@
+services:
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_files:/var/www/wordpress
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    restart: always
+    env_file:
+      - .env
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    volumes:
+      - wordpress_files:/var/www/wordpress
+      - ../secrets/db_password.txt:/run/secrets/db_password.txt:ro
+      - ../secrets/user2_password.txt:/run/secrets/user2_password.txt:ro
+      - ../secrets/admin_password.txt:/run/secrets/admin_password.txt:ro
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_HOST=mariadb
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    restart: always
+    env_file:
+      - .env
+
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    volumes:
+      - wordpress_db:/var/lib/mysql
+      - ../secrets/db_root_password.txt:/run/secrets/db_root_password.txt:ro
+      - ../secrets/db_password.txt:/run/secrets/db_password.txt:ro
+      - ../secrets/credentials.txt:/run/secrets/credentials.txt:ro
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+    networks:
+      - inception
+    restart: always
+    env_file:
+      - .env
+
+volumes:
+  wordpress_files:
+  wordpress_db:
+
+networks:
+  inception:
+    driver: bridge
