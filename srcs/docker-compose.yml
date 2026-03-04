@@ -80,7 +80,7 @@ services:
 
   # Serveur FTP pointant sur les fichiers WordPress
   ftp:
-    build: ./requirements/ftp
+    build: ./requirements/bonus/ftp
     container_name: ftp
     ports:
       - "21:21"
@@ -98,7 +98,7 @@ services:
 
   # Site statique HTML (accessible via /static)
   static-site:
-    build: ./requirements/static-site
+    build: ./requirements/bonus/static-site
     container_name: static-site
     networks:
       - inception
@@ -107,7 +107,7 @@ services:
   # cAdvisor — collecte les métriques de tous les containers Docker
   # Nécessite l'accès au socket Docker et aux cgroups du host
   cadvisor:
-    build: ./requirements/cadvisor
+    build: ./requirements/bonus/cadvisor
     container_name: cadvisor
     volumes:
       - /:/rootfs:ro
@@ -121,7 +121,7 @@ services:
 
   # Prometheus — collecte et stocke les métriques de cAdvisor
   prometheus:
-    build: ./requirements/prometheus
+    build: ./requirements/bonus/prometheus
     container_name: prometheus
     volumes:
       - prometheus_data:/var/lib/prometheus
@@ -133,7 +133,7 @@ services:
 
   # Grafana — affiche les métriques sous forme de dashboards (via /grafana/)
   grafana:
-    build: ./requirements/grafana
+    build: ./requirements/bonus/grafana
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
