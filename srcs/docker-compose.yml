@@ -1,4 +1,9 @@
 services:
+
+  # ─────────────────────────────────────────────
+  # MANDATORY — Services obligatoires
+  # ─────────────────────────────────────────────
+
   nginx:
     build: ./requirements/nginx
     container_name: nginx
@@ -28,6 +33,7 @@ services:
       - MYSQL_HOST=mariadb
     depends_on:
       - mariadb
+      - redis
     networks:
       - inception
     restart: always
@@ -41,7 +47,6 @@ services:
       - wordpress_db:/var/lib/mysql
       - ../secrets/db_root_password.txt:/run/secrets/db_root_password.txt:ro
       - ../secrets/db_password.txt:/run/secrets/db_password.txt:ro
-      - ../secrets/credentials.txt:/run/secrets/credentials.txt:ro
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
@@ -50,6 +55,19 @@ services:
     restart: always
     env_file:
       - .env
+
+  # ─────────────────────────────────────────────
+  # BONUS — Services supplémentaires
+  # ─────────────────────────────────────────────
+
+  # Cache WordPress (requiert php7.4-redis dans le container wordpress)
+  redis:
+    build: ./requirements/bonus/redis
+    container_name: redis
+    networks: 
+     - inception
+    restart: always
+
 
 volumes:
   wordpress_files:
