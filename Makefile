@@ -1,23 +1,44 @@
+LOGIN		= aledos-s
+DATA_PATH	= /home/$(LOGIN)/data
+COMPOSE		= docker compose -f srcs/docker-compose.yml
 
-all:
-	docker compose -f srcs/docker-compose.yml up --build -d
-# all __ 				cible par defaut
-# docker compose __ 	lance docker compose
-# -f srcs/....yml __ 	indique le chemin du fichier docker-compose.yml
-# up --build __			lance les services et (re)construit les images dock si besoin
-# -d __ 				exec les conteneurs en arriere plan
+# Dossiers de données persistantes sur le host
+DATA_DIRS	= $(DATA_PATH)/wordpress \
+			  $(DATA_PATH)/mariadb \
+			  $(DATA_PATH)/prometheus \
+			  $(DATA_PATH)/grafana
 
+.PHONY: all up down clean fclean re logs ps
 
+# Lance tout : crée les dossiers, build les images, démarre les containers
+all: $(DATA_DIRS)
+	$(COMPOSE) up -d --build
+
+# Crée les dossiers de données si manquants
+$(DATA_DIRS):
+	mkdir -p $@
+
+# Arrête les containers sans supprimer les données
 down:
-	docker compose -f srcs/docker-compose.yml down
-# down __ 				stop et supprime les conteneurs, reseaux etc..
-# 						permet d'eteindre proprement le projet
+	$(COMPOSE) down
 
-clean:
+# Supprime les containers et les images
+clean: down
+	$(COMPOSE) down --rmi all
+
+# Supprime tout : containers, images, volumes ET données sur le host
+fclean: clean
+	$(COMPOSE) down -v
+	sudo rm -rf $(DATA_PATH)
 	docker system prune -af
-# clean __ 				nettoie tout ce que docker n'utilise plus
-# -a -f __ 				a: supprime les images non utilise. f: force
 
-
-fclean: down clean
+# Repart de zéro
 re: fclean all
+
+# Affiche les logs de tous les services
+logs:
+	$(COMPOSE) logs -f
+
+# Affiche l'état des containers
+ps:
+	$(COMPOSE) ps
