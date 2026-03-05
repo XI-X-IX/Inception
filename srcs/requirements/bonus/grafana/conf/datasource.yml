@@ -1,0 +1,11 @@
+# Ce fichier est lu au démarrage de Grafana (provisioning automatique)
+# Il connecte Prometheus comme source de données sans configuration manuelle
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true

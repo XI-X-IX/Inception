@@ -1,0 +1,15 @@
+global:
+  # Collecte les métriques toutes les 15 secondes
+  scrape_interval: 15s
+
+scrape_configs:
+
+  # Prometheus se surveille lui-même
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # cAdvisor surveille tous les containers Docker
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']

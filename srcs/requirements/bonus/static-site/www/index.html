@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aledos-s | 42 Student</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        h1 { font-size: 3rem; color: #00d4aa; margin-bottom: 0.5rem; letter-spacing: 4px; }
+        .subtitle { color: #888; font-size: 1.1rem; margin-bottom: 2rem; }
+
+        .stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .tag {
+            background: #1a1a2e;
+            border: 1px solid #00d4aa;
+            color: #00d4aa;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .description { color: #aaa; line-height: 1.6; margin-bottom: 2rem; }
+
+        .blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>aledos-s</h1>
+        <p class="subtitle">42 Student — DevOps & SysAdmin</p>
+
+        <div class="stack">
+            <span class="tag">Docker</span>
+            <span class="tag">NGINX</span>
+            <span class="tag">MariaDB</span>
+            <span class="tag">WordPress</span>
+            <span class="tag">Redis</span>
+            <span class="tag">Prometheus</span>
+            <span class="tag">Grafana</span>
+            <span class="tag">Linux</span>
+        </div>
+
+        <p class="description">
+            This infrastructure runs the <strong>Inception</strong> project from 42.<br>
+            Built with Docker Compose — NGINX · WordPress · MariaDB · Redis · Monitoring.
+        </p>
+
+        <p style="color: #555;">
+            <span class="blink">▮</span> All systems operational
+        </p>
+    </div>
+</body>
+</html>
