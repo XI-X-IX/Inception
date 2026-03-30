@@ -98,7 +98,7 @@ This project uses named volumes with a fixed host path (`/home/aledos-s/data/`) 
 
 **1. Clone the repository:**
 ```bash
-git clone <your-repo-url>
+git clone git@github.com:XI-X-IX/Inception.git
 cd Inception
 ```
 
